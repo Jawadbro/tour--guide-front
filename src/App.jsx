@@ -11,8 +11,8 @@ export default function App() {
     setResult(null);
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/suggest-simple?query=${encodeURIComponent(query)}`
-      );
+  `https://tour-guide-back.onrender.com/api/suggest-simple?query=${encodeURIComponent(query)}`
+);
       const data = await res.json();
       setResult(data);
     } catch (err) {
