@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css"; // We'll create this next
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -11,8 +12,8 @@ export default function App() {
     setResult(null);
     try {
       const res = await fetch(
-  `https://tour-guide-back.onrender.com/api/suggest-simple?query=${encodeURIComponent(query)}`
-);
+        `https://tour-guide-back.onrender.com/api/suggest-simple?query=${encodeURIComponent(query)}`
+      );
       const data = await res.json();
       setResult(data);
     } catch (err) {
@@ -22,55 +23,36 @@ export default function App() {
   };
 
   return (
-    <div style={{ fontFamily: "sans-serif", padding: "2rem" }}>
+    <div className="container">
       <h1>🇧🇩 BD Tour Guide</h1>
 
-      <div style={{ margin: "1rem 0" }}>
+      <div className="search-box">
         <input
           type="text"
           placeholder="Enter a location or query..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          style={{ padding: "0.5rem", width: "70%" }}
         />
-        <button
-          onClick={handleSearch}
-          style={{ padding: "0.5rem", marginLeft: "0.5rem" }}
-        >
-          Search
-        </button>
+        <button onClick={handleSearch}>Search</button>
       </div>
 
-      {loading && <p>Loading...</p>}
+      {loading && <div className="loading">Loading...</div>}
 
-      {result?.error && <p style={{ color: "red" }}>{result.error}</p>}
+      {result?.error && <div className="error">{result.error}</div>}
 
       {result?.success && (
-        <div>
-          <h2>AI Message:</h2>
-          <p>{result.ai_message}</p>
+        <div className="results">
+          <div className="ai-message">
+            <h2>Rahim Says:</h2>
+            <p>{result.ai_message}</p>
+          </div>
 
           <h2>Suggestions:</h2>
-          <div>
+          <div className="cards">
             {result.suggestions.map((place, idx) => (
-              <div
-                key={idx}
-                style={{
-                  marginBottom: "1.5rem",
-                  borderBottom: "1px solid #ccc",
-                  paddingBottom: "1rem",
-                }}
-              >
-                <h3>
-                  {place.name} ({place.division})
-                </h3>
-                {place.image && (
-                  <img
-                    src={place.image}
-                    alt={place.name}
-                    style={{ maxWidth: "300px", display: "block", margin: "0.5rem 0" }}
-                  />
-                )}
+              <div key={idx} className="card">
+                <h3>{place.name} ({place.division})</h3>
+                {place.image && <img src={place.image} alt={place.name} />}
                 <p>{place.description}</p>
                 <a href={place.url} target="_blank" rel="noopener noreferrer">
                   More info
